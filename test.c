@@ -1,37 +1,54 @@
-#include <stdio.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 
-int num[300005];
-int count[300005] = {0};
-int main()
-{
-  int n, x;
-  scanf("%d %d", &n, &x);
-  int last = -1, len = 0;
-  for(int i = 0; i < n; i++)
-  {
-    int a;
-    scanf("%d", &a);
-    if(a == last) count[len-1]++;
-    else
-    {
-      num[len] = a;
-      count[len]++;
-      len++;
+typedef struct note{
+    int data;
+    struct note* next;
+}note;
+
+note* creat_new_node(int num){ //生成節點
+    note* temp=(note *) malloc(sizeof(note));
+    temp->data=num;
+    temp->next=NULL;
+    return temp;
+}
+
+void creat_new_data_last(int num, note *head){ //串列最後面加入資料
+    note* temp=head;
+    while(temp->next !=NULL){
+        temp=temp->next;
     }
-    last = a;
-  }
+    temp->next=creat_new_node(num);
+}
 
-  //for(int i = 0; i < len; i++) printf("%d %d\n", num[i], count[i]);
+void print_data_after_node(note* start){ //印出有資料的字串
+    while(start->next !=NULL){
+        printf("%d ", start->data);
+        start=start->next;
+    }
+}
 
-  long long int sum = 0;
-  for(int i = 0; i < len; i++)
-    if(num[i] != 1 && num[i]*2 >= x) sum += (count[i] * (count[i]-1)) / 2;
+void printall(note* head){ //印出全部
+    if(head->next==NULL){
+        printf(" \n");
+    }else{
+        print_data_after_node(head);
+    }
+}
 
-  for(int i = 0; i < len-1; i++)
-    for(int j = i+1; j < len; j++)
-      if(num[i]+num[j] >= x)
-        sum += count[i] * count[j];
-
-  printf("%lld", sum);
-  return 0;
+int main(void){
+    note *head = (note*) malloc(sizeof(note)); //定義開頭指標
+    int num;
+    char str[15]="";
+    while(scanf("%s", str) !=EOF){
+        if(!strcmp(str, "add")){
+            scanf("%d", &num);
+            creat_new_data_last(num, head);
+            printf("add_succ\n");
+        }
+        if(!strcmp(str, "print")){
+            printall(head);
+        }
+    }
 }
