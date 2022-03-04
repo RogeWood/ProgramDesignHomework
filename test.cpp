@@ -1,38 +1,24 @@
 #include <iostream>
-#include <string.h>
-
+#include <vector>
+#include <cmath>
+#define IO ios::sync_with_stdio(0);cin.tie(0)
+#define MAXN 1000001
 using namespace std;
+
+int arr[MAXN] = {0};
 
 int main()
 {
-  char s[10005];
-  cin >> s;
-  int slen = strlen(s);
-  if(slen % 4)
-  {
-    int n = 4 - slen% 4;
-    while(n--)
-      strcat(s, "x");
-  }
-  slen = strlen(s);
-  cout << s << endl;
-  string key;
-  cin >> key;
-  char rek[1005];
-  for(int i = 0 ; i < key.length(); i++)
-    rek[i] = key[key.length()-1-i];
+    vector<int> prime;
 
-  long long int t = 0;
-  for(int i = 0, j = 0; i <= slen; i++, j++)
-  {
-    if(j == key.length() || i == slen)
+    for(int i = 2; i < MAXN; i++)
     {
-      j = 0;
-      cout << t << ' ';
-      t = 0;
+        if(!arr[i])
+        {
+            prime.push_back(i);
+            for(int j = i+i; j < MAXN; j+=i)
+                arr[j] = 1;
+        }
     }
-    t *= 16*16;
-    t += s[i] ^ key[j] ^ rek[j];
-  }
-  return 0;
+    return 0;
 }
